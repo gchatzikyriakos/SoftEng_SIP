@@ -26,23 +26,23 @@
             <MEDIA_SOURCE value=""/>
             <MEDIA_BUFFER_LENGTH value="100"/>
             <IP_ADDRESS value=""/>
-            <AUDIO_PORT value="22222"/>
-            <VIDEO_PORT value="22233"/>
+            <AUDIO_PORT value="22224"/>
+            <VIDEO_PORT value="22222"/>
         </media>
         <sip>
             <PUBLIC_ADDRESS value="sip:jmaria"/>
             <TRANSPORT value=""/>
-            <REGISTRAR_ADDRESS value="127.0.0.1:4000"/>
-            <USER_NAME value="jmaria"/>
+            <REGISTRAR_ADDRESS value="192.168.0.100:4000"/>
+            <USER_NAME value="bob"/>
             <STACK_PATH value="gov.nist"/>
-            <PREFERRED_LOCAL_PORT value="5060"/>
+            <PREFERRED_LOCAL_PORT value=""/>
             <DISPLAY_NAME value="jmaria"/>
             <REGISTRAR_TRANSPORT value="UDP"/>
             <REGISTRATIONS_EXPIRATION value="3600"/>
-            <REGISTRAR_PORT value="5061"/>
+            <REGISTRAR_PORT value="5060"/>
 
-            <DEFAULT_DOMAIN_NAME value="127.0.0.1:4000"/>
-            <DEFAULT_AUTHENTICATION_REALM value="127.0.0.1:4000"/>
+            <DEFAULT_DOMAIN_NAME value="192.168.0.100:4000"/>
+            <DEFAULT_AUTHENTICATION_REALM value="192.168.0.100:4000"/>
             <WAIT_UNREGISTGRATION_FOR value="1100"/>
             <SAME_USER_EVERYWHERE value="true"/>
             <simple>
@@ -114,10 +114,10 @@ net.java.sip.communicator.gui.PASSWORD_LABEL=Password:
 </gov>
 <javax>
     <sip>
-        <IP_ADDRESS value="0.0.0.0"/>
+        <IP_ADDRESS value="192.168.0.100"/>
         <STACK_NAME value="sip-communicator"/>
         <ROUTER_PATH value="net.java.sip.communicator.sip.SipCommRouter"/>
-        <OUTBOUND_PROXY value="127.0.0.1:4000/udp"/>
+        <OUTBOUND_PROXY value="192.168.0.100:4000/udp"/>
         <RETRANSMISSON_FILTER value=""/>
         <EXTENSION_METHODS value=""/>
         <RETRANSMISSION_FILTER value="true"/>

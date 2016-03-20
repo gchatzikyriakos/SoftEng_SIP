@@ -14,6 +14,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import gov.nist.sip.proxy.authentication.*;
 import gov.nist.sip.proxy.presenceserver.*;
+import gov.nist.sip.proxy.project.ProxyDecorator;
 import gov.nist.sip.proxy.router.*;
 import gov.nist.javax.sip.header.*;
 
@@ -53,7 +54,14 @@ public class Proxy implements SipListener  {
     protected Authentication authentication;
     protected RequestForwarding requestForwarding;
     protected ResponseForwarding responseForwarding;
-
+    
+    //TODO proxy decorator & getProxyDecorator
+    protected ProxyDecorator proxyDecorator;
+    
+    public ProxyDecorator getProxyDecorator() {
+        return proxyDecorator;
+    }
+    //TODO end
    
     public RequestForwarding getRequestForwarding() {
         return requestForwarding;
@@ -147,6 +155,8 @@ public class Proxy implements SipListener  {
                     registrar=new Registrar(this);
                     requestForwarding=new RequestForwarding(this);
                     responseForwarding=new ResponseForwarding(this);
+                    //TODO
+                    proxyDecorator = new ProxyDecorator(this);
                 }
             }
             catch (Exception ex) {
@@ -636,8 +646,8 @@ public class Proxy implements SipListener  {
              }
       
            
-
-            if ( registrar.hasRegistration(request)  ) {
+             //TODO
+            if ( registrar.hasRegistration(request) && !proxyDecorator.checkBlocking(request) ) {
                
                 targetURIList=registrar.getContactsURI(request);
                 
@@ -803,16 +813,32 @@ public class Proxy implements SipListener  {
                proxy MUST return an error response, which SHOULD be the 480
                (Temporarily Unavailable) response.
              */
-             Response response=messageFactory.createResponse
-             (Response.TEMPORARILY_UNAVAILABLE,request);
-             if (serverTransaction!=null)
-                    serverTransaction.sendResponse(response);
-             else sipProvider.sendResponse(response);
-                   
-             if (ProxyDebug.debug)
-                 ProxyDebug.println("Proxy, processRequest(), unable to set "+
-                 " the targets, 480 (Temporarily Unavailable) replied:\n"+
-                 response.toString() );
+            //TODO if the target in blocking the caller
+            if (proxyDecorator.checkBlocking(request)){
+            	Response response=messageFactory.createResponse(Response.BUSY_HERE,request);
+                if (serverTransaction!=null)
+                	serverTransaction.sendResponse(response);
+                else sipProvider.sendResponse(response);
+                
+                if (ProxyDebug.debug)
+	                 ProxyDebug.println("Proxy, processRequest(), target is blocking "+
+	                 " the source, 486 (Busy Here) replied:\n"+
+	                 response.toString() );
+                               
+            }
+            else{
+	             Response response=messageFactory.createResponse
+	             (Response.TEMPORARILY_UNAVAILABLE,request);
+	             if (serverTransaction!=null)
+	                    serverTransaction.sendResponse(response);
+	             else sipProvider.sendResponse(response);
+	                   
+	             if (ProxyDebug.debug)
+	                 ProxyDebug.println("Proxy, processRequest(), unable to set "+
+	                 " the targets, 480 (Temporarily Unavailable) replied:\n"+
+	                 response.toString() );
+            }
+            //TODO end
 
         }
         catch (Exception ex){

@@ -1088,7 +1088,7 @@ public class SipManager
 
             stackAddress = getLocalHostAddress();
             //Add the host address to the properties that will pass the stack
-            Utils.setProperty("javax.sip.IP_ADDRESS", stackAddress);
+            //Utils.setProperty("javax.sip.IP_ADDRESS", stackAddress);
 
             //ensure IPv6 address compliance
             if (stackAddress.indexOf(':') != stackAddress.lastIndexOf(':')
