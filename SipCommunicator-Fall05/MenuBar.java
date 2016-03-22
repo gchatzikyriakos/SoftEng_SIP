@@ -83,7 +83,7 @@ import net.java.sip.communicator.sip.security.UserCredentials;
  *
  */
 class MenuBar
-    extends JMenuBar
+        extends JMenuBar
 {
     //// TODO: 20/3/2016
     JMenu callMenu = new JMenu("Call");
@@ -92,6 +92,7 @@ class MenuBar
     JMenu helpMenu = new JMenu("Help");
     JMenuItem blockUser = new JMenuItem("Block User");
     JMenuItem forwardCall = new JMenuItem("Call Forwarding");
+    JMenuItem billingInfo = new JMenuItem("Billing Info");
 
 
     Action exitAction;
@@ -107,6 +108,7 @@ class MenuBar
         add(editMenu);
         add(settingsMenu);
         add(helpMenu);
+        add(billingInfo);
 
         // TODO: 20/3/2016
         editMenu.add(blockUser);
@@ -123,6 +125,14 @@ class MenuBar
             public void actionPerformed(ActionEvent e) {
                 //System.out.println("2");
                 ForwardUI f  = new ForwardUI();
+            }
+        });
+        editMenu.add(billingInfo);
+        billingInfo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //System.out.println("2");
+                BillingUI bl  = new BillingUI();
             }
         });
 
@@ -192,10 +202,6 @@ class MenuBar
         helpMenu.addSeparator();
         helpMenu.add(mItem);
     }
-
-
-
-
 
 /*
     void addShowTracesAction(Action action)

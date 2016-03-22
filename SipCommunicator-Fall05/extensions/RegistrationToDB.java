@@ -62,6 +62,11 @@ public class RegistrationToDB {
                 stmt.setString(1, name);
                 stmt.setString(2, password);
                 stmt.executeUpdate();
+                sql = "INSERT INTO billing VALUES (?,?)";
+                stmt = conn.prepareStatement(sql);
+                stmt.setString(1, name);
+                stmt.setFloat(2, 0.0f);
+                stmt.executeUpdate();
             }
             stmt.close();
         } catch (SQLException e1) {

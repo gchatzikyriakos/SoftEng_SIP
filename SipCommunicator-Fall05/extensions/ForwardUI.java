@@ -11,16 +11,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-/**
- * Created by yandall on 20/3/2016.
- */
 public class ForwardUI {
+
     public static void main(String[] args) {
         new ForwardUI();
     }
 
     public ForwardUI() {
-    	ConnectToDB database = new ConnectToDB();
+        ConnectToDB database = new ConnectToDB();
 
         JFrame frame = new JFrame("Call Forwarding");
         frame.setVisible(true);
@@ -48,18 +46,19 @@ public class ForwardUI {
                 Connection conn = database.start();
                 String sql = "INSERT INTO forwards VALUES (?,?)";
                 PreparedStatement stmt;
-				try {
-					stmt = conn.prepareStatement(sql);
-					stmt.setString(1, username);
-					stmt.setString(2, textFieldValue);
-					stmt.executeUpdate();
-					stmt.close();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				database.close(conn);
-                // Blocking handler call
+                try {
+                    stmt = conn.prepareStatement(sql);
+                    stmt.setString(1, username);
+                    stmt.setString(2, textFieldValue);
+                    stmt.executeUpdate();
+                    stmt.close();
+                } catch (SQLException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+                database.close(conn);
+                // Close window
+                frame.dispose();
             }
         });
         panel.add(okbtn);

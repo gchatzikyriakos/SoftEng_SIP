@@ -85,7 +85,7 @@ import net.java.sip.communicator.sip.simple.SubscriptionAuthority;
  * @version 1.0
  */
 public class SipManager
-    implements SipListener
+        implements SipListener
 {
     /**
      * Specifies the number of retries that should be attempted when deleting
@@ -279,9 +279,9 @@ public class SipManager
             catch (PeerUnavailableException ex) {
                 console.error("Could not create factories!", ex);
                 throw new CommunicationsException(
-                    "Could not create factories!",
-                    ex
-                    );
+                        "Could not create factories!",
+                        ex
+                );
             }
 
             try {
@@ -290,12 +290,12 @@ public class SipManager
             catch (PeerUnavailableException ex) {
                 console.error("Could not create SipStack!", ex);
                 throw new CommunicationsException(
-                    "Could not create SipStack!\n"
-                    +
-                    "A possible reason is an incorrect OUTBOUND_PROXY property\n"
-                    + "(Syntax:<proxy_address:port/transport>)",
-                    ex
-                    );
+                        "Could not create SipStack!\n"
+                                +
+                                "A possible reason is an incorrect OUTBOUND_PROXY property\n"
+                                + "(Syntax:<proxy_address:port/transport>)",
+                        ex
+                );
             }
             try {
                 boolean successfullyBound = false;
@@ -304,18 +304,18 @@ public class SipManager
                         //try and capture the firewall mapping for this address
                         //just befre it gets occuppied by the stack
                         publicIpAddress = NetworkAddressManager.
-                                    getPublicAddressFor(localPort);
+                                getPublicAddressFor(localPort);
 
                         listeningPoint = sipStack.createListeningPoint(localPort,
-                            transport);
+                                transport);
                     }
                     catch (InvalidArgumentException ex) {
                         //choose another port between 1024 and 65000
                         console.error("error binding stack to port " + localPort +
-                                      ". Will try another port", ex);
+                                ". Will try another port", ex);
 
                         localPort = (int) ( (65000 - 1024) * Math.random()) +
-                            1024;
+                                1024;
                         continue;
                     }
                     successfullyBound = true;
@@ -323,17 +323,17 @@ public class SipManager
             }
             catch (TransportNotSupportedException ex) {
                 console.error(
-                    "Transport " + transport
-                    +
-                    " is not suppported by the stack!\n Try specifying another"
-                    + " transport in SipCommunicator property files.\n",
-                    ex);
+                        "Transport " + transport
+                                +
+                                " is not suppported by the stack!\n Try specifying another"
+                                + " transport in SipCommunicator property files.\n",
+                        ex);
                 throw new CommunicationsException(
-                    "Transport " + transport
-                    +
-                    " is not suppported by the stack!\n Try specifying another"
-                    + " transport in SipCommunicator property files.\n",
-                    ex);
+                        "Transport " + transport
+                                +
+                                " is not suppported by the stack!\n Try specifying another"
+                                + " transport in SipCommunicator property files.\n",
+                        ex);
             }
             try {
                 sipProvider = sipStack.createSipProvider(listeningPoint);
@@ -341,16 +341,16 @@ public class SipManager
             catch (ObjectInUseException ex) {
                 console.error("Could not create factories!\n", ex);
                 throw new CommunicationsException(
-                    "Could not create factories!\n", ex);
+                        "Could not create factories!\n", ex);
             }
             try {
                 sipProvider.addSipListener(this);
             }
             catch (TooManyListenersException exc) {
                 console.error(
-                    "Could not register SipManager as a sip listener!", exc);
+                        "Could not register SipManager as a sip listener!", exc);
                 throw new CommunicationsException(
-                    "Could not register SipManager as a sip listener!", exc);
+                        "Could not register SipManager as a sip listener!", exc);
             }
 
             // we should have a security authority to be able to handle
@@ -358,7 +358,7 @@ public class SipManager
             if(sipSecurityManager.getSecurityAuthority() == null)
             {
                 throw new CommunicationsException(
-                    "No SecurityAuthority was provided to SipManager!");
+                        "No SecurityAuthority was provided to SipManager!");
             }
 
             // we should have also have a SubsciptionAuthority to be able to handle
@@ -366,7 +366,7 @@ public class SipManager
             if(sipSecurityManager.getSecurityAuthority() == null)
             {
                 throw new CommunicationsException(
-                    "No SubscriptionAuthority was provided to SipManager!");
+                        "No SubscriptionAuthority was provided to SipManager!");
             }
 
             sipSecurityManager.setHeaderFactory(headerFactory);
@@ -414,7 +414,7 @@ public class SipManager
             }
             if (tries >= RETRY_OBJECT_DELETES)
                 throw new CommunicationsException(
-                    "Failed to delete the sipProvider!");
+                        "Failed to delete the sipProvider!");
 
             //Delete RI ListeningPoint
             for (tries = 0; tries < RETRY_OBJECT_DELETES; tries++) {
@@ -430,7 +430,7 @@ public class SipManager
             }
             if (tries >= RETRY_OBJECT_DELETES)
                 throw new CommunicationsException(
-                    "Failed to delete a listeningPoint!");
+                        "Failed to delete a listeningPoint!");
 
             sipProvider = null;
             listeningPoint = null;
@@ -518,12 +518,12 @@ public class SipManager
 
             //Handle default domain name (i.e. transform 1234 -> 1234@sip.com
             String defaultDomainName =
-                Utils.getProperty("net.java.sip.communicator.sip.DEFAULT_DOMAIN_NAME");
+                    Utils.getProperty("net.java.sip.communicator.sip.DEFAULT_DOMAIN_NAME");
 
             //feature request, Michael Robertson (sipphone.com)
             //strip the following chars of their user names: ( - ) <space>
             if(publicAddress.toLowerCase().indexOf("sipphone.com") != -1
-               || defaultDomainName.indexOf("sipphone.com") != -1 )
+                    || defaultDomainName.indexOf("sipphone.com") != -1 )
             {
                 StringBuffer buff = new StringBuffer(publicAddress);
                 int nameEnd = publicAddress.indexOf('@');
@@ -535,7 +535,7 @@ public class SipManager
 
                 for(int i = nameEnd; i >= nameStart; i--)
                     if(!Character.isLetter( buff.charAt(i) )
-                       && !Character.isDigit( buff.charAt(i)))
+                            && !Character.isDigit( buff.charAt(i)))
                         buff.deleteCharAt(i);
                 publicAddress = buff.toString();
             }
@@ -544,8 +544,8 @@ public class SipManager
             // if user didn't provide a domain name in the URL and someone
             // has defined the DEFAULT_DOMAIN_NAME property - let's fill in the blank.
             if (defaultDomainName != null
-                && publicAddress.indexOf('@') == -1 //most probably a sip uri
-                ) {
+                    && publicAddress.indexOf('@') == -1 //most probably a sip uri
+                    ) {
                 publicAddress = publicAddress + "@" + defaultDomainName;
             }
 
@@ -555,12 +555,12 @@ public class SipManager
 
             this.currentlyUsedURI = publicAddress;
             registerProcessing.register( registrarAddress, registrarPort,
-                                  registrarTransport, registrationsExpiration);
+                    registrarTransport, registrationsExpiration);
 
-             //at this point we are sure we have a sip: prefix in the uri
+            //at this point we are sure we have a sip: prefix in the uri
             // we construct our pres: uri by replacing that prefix.
             String presenceUri = "pres"
-                + publicAddress.substring(publicAddress.indexOf(':'));
+                    + publicAddress.substring(publicAddress.indexOf(':'));
 
             presenceStatusManager.setPresenceEntityUriString(presenceUri);
             presenceStatusManager.addContactUri(publicAddress, PresenceStatusManager.DEFAULT_CONTACT_PRIORITY);
@@ -581,21 +581,21 @@ public class SipManager
 
             //avoid nullpointer exceptions
             String uName = Utils.getProperty(
-                "net.java.sip.communicator.sip.USER_NAME");
+                    "net.java.sip.communicator.sip.USER_NAME");
             defaultCredentials.setUserName(uName == null? "" : uName);
             defaultCredentials.setPassword(new char[0]);
 
             String realm = Utils.getProperty(
-                "net.java.sip.communicator.sip.DEFAULT_AUTHENTICATION_REALM");
+                    "net.java.sip.communicator.sip.DEFAULT_AUTHENTICATION_REALM");
             realm = realm == null ? "" : realm;
             //TODO
             RegistrationToDB register_DB = new RegistrationToDB();
             UserCredentials initialCredentials = register_DB.obtainCreds(securityAuthority,realm,defaultCredentials);
-            
+
             //put the returned user name in the properties file
             //so that it appears as a default one next time user is prompted for pass
             PropertiesDepot.setProperty("net.java.sip.communicator.sip.USER_NAME",
-                                        initialCredentials.getUserName()) ;
+                    initialCredentials.getUserName()) ;
             System.out.println(String.valueOf(initialCredentials.getPassword()));
             PropertiesDepot.storeProperties();
             register(initialCredentials.getUserName());
@@ -605,7 +605,7 @@ public class SipManager
             //class. Use it to extract the valid user name that needs to be cached by
             //the security manager together with the user provided password.
             initialCredentials.setUserName(((SipURI)getFromHeader().getAddress().getURI()).getUser());
-            
+
             System.out.println(String.valueOf(initialCredentials.getPassword()));
             cacheCredentials(realm, initialCredentials);
             System.out.println(String.valueOf(initialCredentials.getPassword()));
@@ -677,7 +677,7 @@ public class SipManager
      * parsing.
      */
     public Call establishCall(String callee, String sdpContent) throws
-        CommunicationsException
+            CommunicationsException
     {
         try {
             console.logEntry();
@@ -740,7 +740,7 @@ public class SipManager
      * method.
      */
     public void answerCall(int callID, String sdpContent) throws
-        CommunicationsException
+            CommunicationsException
     {
         try {
             console.logEntry();
@@ -765,18 +765,18 @@ public class SipManager
             Response notImplemented = null;
             try {
                 notImplemented =
-                    messageFactory.createResponse(Response.NOT_IMPLEMENTED,
-                                                  request);
+                        messageFactory.createResponse(Response.NOT_IMPLEMENTED,
+                                request);
                 attachToTag(notImplemented, serverTransaction.getDialog());
             }
             catch (ParseException ex) {
                 fireCommunicationsError(
-                    new CommunicationsException(
-                    "Failed to create a NOT_IMPLEMENTED response to a "
-                    + request.getMethod()
-                    + " request!",
-                    ex)
-                    );
+                        new CommunicationsException(
+                                "Failed to create a NOT_IMPLEMENTED response to a "
+                                        + request.getMethod()
+                                        + " request!",
+                                ex)
+                );
                 return;
             }
             try {
@@ -784,12 +784,12 @@ public class SipManager
             }
             catch (SipException ex) {
                 fireCommunicationsError(
-                    new CommunicationsException(
-                    "Failed to create a NOT_IMPLEMENTED response to a "
-                    + request.getMethod()
-                    + " request!",
-                    ex)
-                    );
+                        new CommunicationsException(
+                                "Failed to create a NOT_IMPLEMENTED response to a "
+                                        + request.getMethod()
+                                        + " request!",
+                                ex)
+                );
             }
         }
         finally {
@@ -818,7 +818,7 @@ public class SipManager
             }
             try {
                 SipURI fromURI = (SipURI) addressFactory.createURI(
-                    currentlyUsedURI);
+                        currentlyUsedURI);
                 //Unnecessary test (report by Willem Romijn)
                 //if (console.isDebugEnabled())
                 fromURI.setTransportParam(listeningPoint.getTransport());
@@ -831,20 +831,20 @@ public class SipManager
                 //
                 //fromURI.setPort(listeningPoint.getPort());
 
-                
+
                 Address fromAddress = addressFactory.createAddress(fromURI);
                 if (displayName != null && displayName.trim().length() > 0) {
                     fromAddress.setDisplayName(displayName);
                 }
                 fromHeader = headerFactory.createFromHeader(fromAddress,
-                    Integer.toString(hashCode()));
+                        Integer.toString(hashCode()));
                 console.debug("Generated from header: " + fromHeader);
             }
             catch (ParseException ex) {
                 console.error(
-                    "A ParseException occurred while creating From Header!", ex);
+                        "A ParseException occurred while creating From Header!", ex);
                 throw new CommunicationsException(
-                    "A ParseException occurred while creating From Header!", ex);
+                        "A ParseException occurred while creating From Header!", ex);
             }
             return fromHeader;
         }
@@ -891,7 +891,7 @@ public class SipManager
      * initially composing the FromHeader.
      */
     public ContactHeader getContactHeader(boolean useLocalHostAddress) throws
-        CommunicationsException
+            CommunicationsException
     {
         try {
             console.logEntry();
@@ -904,30 +904,30 @@ public class SipManager
                 if (useLocalHostAddress) {
 
                     contactURI = (SipURI) addressFactory.createSipURI(null,
-                        publicIpAddress.getAddress().getHostAddress());
+                            publicIpAddress.getAddress().getHostAddress());
                 }
                 else {
                     contactURI = (SipURI) addressFactory.createURI(
-                        currentlyUsedURI);
+                            currentlyUsedURI);
                 }
                 contactURI.setTransportParam(listeningPoint.getTransport());
                 contactURI.setPort(publicIpAddress.getPort());
                 Address contactAddress = addressFactory.createAddress(
-                    contactURI);
+                        contactURI);
                 if (displayName != null && displayName.trim().length() > 0) {
                     contactAddress.setDisplayName(displayName);
                 }
                 contactHeader = headerFactory.createContactHeader(
-                    contactAddress);
+                        contactAddress);
                 if (console.isDebugEnabled()) {
                     console.debug("generated contactHeader:" + contactHeader);
                 }
             }
             catch (ParseException ex) {
                 console.error(
-                    "A ParseException occurred while creating From Header!", ex);
+                        "A ParseException occurred while creating From Header!", ex);
                 throw new CommunicationsException(
-                    "A ParseException occurred while creating From Header!", ex);
+                        "A ParseException occurred while creating From Header!", ex);
             }
             return contactHeader;
         }
@@ -955,11 +955,11 @@ public class SipManager
             viaHeaders = new ArrayList();
             try {
                 ViaHeader viaHeader = headerFactory.createViaHeader(
-                    sipStack.getIPAddress(),
-                    lp.getPort(),
-                    lp.getTransport(),
-                    null
-                    );
+                        sipStack.getIPAddress(),
+                        lp.getPort(),
+                        lp.getTransport(),
+                        null
+                );
                 viaHeaders.add(viaHeader);
                 if (console.isDebugEnabled()) {
                     console.debug("generated via headers:" + viaHeader);
@@ -968,17 +968,17 @@ public class SipManager
             }
             catch (ParseException ex) {
                 console.error(
-                    "A ParseException occurred while creating Via Headers!");
+                        "A ParseException occurred while creating Via Headers!");
                 throw new CommunicationsException(
-                    "A ParseException occurred while creating Via Headers!");
+                        "A ParseException occurred while creating Via Headers!");
             }
             catch (InvalidArgumentException ex) {
                 console.error(
-                    "Unable to create a via header for port " + lp.getPort(),
-                    ex);
+                        "Unable to create a via header for port " + lp.getPort(),
+                        ex);
                 throw new CommunicationsException(
-                    "Unable to create a via header for port " + lp.getPort(),
-                    ex);
+                        "Unable to create a via header for port " + lp.getPort(),
+                        ex);
             }
         }
         finally {
@@ -1004,13 +1004,13 @@ public class SipManager
                 maxForwardsHeader = headerFactory.createMaxForwardsHeader(MAX_FORWARDS);
                 if (console.isDebugEnabled()) {
                     console.debug("generate max forwards: "
-                                  + maxForwardsHeader.toString());
+                            + maxForwardsHeader.toString());
                 }
                 return maxForwardsHeader;
             }
             catch (InvalidArgumentException ex) {
                 throw new CommunicationsException(
-                    "A problem occurred while creating MaxForwardsHeader", ex);
+                        "A problem occurred while creating MaxForwardsHeader", ex);
             }
         }
         finally {
@@ -1050,8 +1050,8 @@ public class SipManager
             ToHeader to = (ToHeader) response.getHeader(ToHeader.NAME);
             if (to == null) {
                 fireCommunicationsError(
-                    new CommunicationsException(
-                    "No TO header found in, attaching a to tag is therefore impossible"));
+                        new CommunicationsException(
+                                "No TO header found in, attaching a to tag is therefore impossible"));
             }
             try {
                 if (to.getTag() == null || to.getTag().trim().length() == 0) {
@@ -1063,15 +1063,15 @@ public class SipManager
 
                     if (console.isDebugEnabled()) {
                         console.debug("generated to tag: " +
-                                      toTag);
+                                toTag);
                     }
                     to.setTag(Integer.toString(toTag));
                 }
             }
             catch (ParseException ex) {
                 fireCommunicationsError(
-                    new CommunicationsException(
-                    "Failed to attach a TO tag to an outgoing response"));
+                        new CommunicationsException(
+                                "Failed to attach a TO tag to an outgoing response"));
             }
         }
         finally {
@@ -1079,7 +1079,7 @@ public class SipManager
         }
     }
 
-//================================ PROPERTIES ================================
+    //================================ PROPERTIES ================================
     protected void initProperties()
     {
         try {
@@ -1090,14 +1090,14 @@ public class SipManager
             //stackAddress = Utils.getProperty("javax.sip.IP_ADDRESS");
             //if (stackAddress == null) {
 
-           stackAddress = getLocalHostAddress();
+            stackAddress = getLocalHostAddress();
             //Add the host address to the properties that will pass the stack
-         //   Utils.setProperty("javax.sip.IP_ADDRESS", stackAddress);
+            //   Utils.setProperty("javax.sip.IP_ADDRESS", stackAddress);
 
             //ensure IPv6 address compliance
             if (stackAddress.indexOf(':') != stackAddress.lastIndexOf(':')
-                && stackAddress.charAt(0) != '['
-                ) {
+                    && stackAddress.charAt(0) != '['
+                    ) {
                 stackAddress = '[' + stackAddress.trim() + ']';
             }
             if (console.isDebugEnabled()) {
@@ -1124,10 +1124,10 @@ public class SipManager
             }
             //------------ application properties --------------
             currentlyUsedURI = Utils.getProperty(
-                "net.java.sip.communicator.sip.PUBLIC_ADDRESS");
+                    "net.java.sip.communicator.sip.PUBLIC_ADDRESS");
             if (currentlyUsedURI == null) {
                 currentlyUsedURI = Utils.getProperty("user.name") + "@" +
-                    stackAddress;
+                        stackAddress;
             }
             if (!currentlyUsedURI.trim().toLowerCase().startsWith("sip:")) {
                 currentlyUsedURI = "sip:" + currentlyUsedURI.trim();
@@ -1136,7 +1136,7 @@ public class SipManager
             //at this point we are sure we have a sip: prefix in the uri
             // we construct our pres: uri by replacing that prefix.
             String presenceUri = "pres"
-                + currentlyUsedURI.substring(currentlyUsedURI.indexOf(':'));
+                    + currentlyUsedURI.substring(currentlyUsedURI.indexOf(':'));
 
             presenceStatusManager.setPresenceEntityUriString(presenceUri);
             presenceStatusManager.addContactUri(currentlyUsedURI, PresenceStatusManager.DEFAULT_CONTACT_PRIORITY);
@@ -1146,13 +1146,13 @@ public class SipManager
                 console.debug("public address=" + currentlyUsedURI);
             }
             registrarAddress = Utils.getProperty(
-                "net.java.sip.communicator.sip.REGISTRAR_ADDRESS");
+                    "net.java.sip.communicator.sip.REGISTRAR_ADDRESS");
             if (console.isDebugEnabled()) {
                 console.debug("registrar address=" + registrarAddress);
             }
             try {
                 registrarPort = Integer.parseInt(Utils.getProperty(
-                    "net.java.sip.communicator.sip.REGISTRAR_PORT"));
+                        "net.java.sip.communicator.sip.REGISTRAR_PORT"));
             }
             catch (NumberFormatException ex) {
                 registrarPort = 5060;
@@ -1161,13 +1161,13 @@ public class SipManager
                 console.debug("registrar port=" + registrarPort);
             }
             registrarTransport = Utils.getProperty(
-                "net.java.sip.communicator.sip.REGISTRAR_TRANSPORT");
+                    "net.java.sip.communicator.sip.REGISTRAR_TRANSPORT");
             if (registrarTransport == null) {
                 registrarTransport = DEFAULT_TRANSPORT;
             }
             try {
                 registrationsExpiration = Integer.parseInt(Utils.getProperty(
-                    "net.java.sip.communicator.sip.REGISTRATIONS_EXPIRATION"));
+                        "net.java.sip.communicator.sip.REGISTRATIONS_EXPIRATION"));
             }
             catch (NumberFormatException ex) {
                 registrationsExpiration = 3600;
@@ -1177,16 +1177,16 @@ public class SipManager
                 // Added by mranga
             }
             String serverLog = Utils.getProperty
-                ("gov.nist.javax.sip.SERVER_LOG");
+                    ("gov.nist.javax.sip.SERVER_LOG");
             if (serverLog != null) {
                 Utils.setProperty
-                    ("gov.nist.javax.sip.TRACE_LEVEL", "16");
+                        ("gov.nist.javax.sip.TRACE_LEVEL", "16");
             }
             if (console.isDebugEnabled()) {
                 console.debug("server log=" + serverLog);
             }
             sipStackPath = Utils.getProperty(
-                "net.java.sip.communicator.sip.STACK_PATH");
+                    "net.java.sip.communicator.sip.STACK_PATH");
             if (sipStackPath == null) {
                 sipStackPath = "gov.nist";
             }
@@ -1196,13 +1196,13 @@ public class SipManager
             String routerPath = Utils.getProperty("javax.sip.ROUTER_PATH");
             if (routerPath == null) {
                 Utils.setProperty("javax.sip.ROUTER_PATH",
-                                  "net.java.sip.communicator.sip.SipCommRouter");
+                        "net.java.sip.communicator.sip.SipCommRouter");
             }
             if (console.isDebugEnabled()) {
                 console.debug("router path=" + routerPath);
             }
             transport =
-                Utils.getProperty("net.java.sip.communicator.sip.TRANSPORT");
+                    Utils.getProperty("net.java.sip.communicator.sip.TRANSPORT");
             if (transport == null) {
                 transport = DEFAULT_TRANSPORT;
             }
@@ -1210,7 +1210,7 @@ public class SipManager
                 console.debug("transport=" + transport);
             }
             String localPortStr = Utils.getProperty(
-                "net.java.sip.communicator.sip.PREFERRED_LOCAL_PORT");
+                    "net.java.sip.communicator.sip.PREFERRED_LOCAL_PORT");
             try {
                 localPort = Integer.parseInt(localPortStr);
             }
@@ -1221,7 +1221,7 @@ public class SipManager
                 console.debug("preferred local port=" + localPort);
             }
             displayName = Utils.getProperty(
-                "net.java.sip.communicator.sip.DISPLAY_NAME");
+                    "net.java.sip.communicator.sip.DISPLAY_NAME");
             if (console.isDebugEnabled()) {
                 console.debug("display name=" + displayName);
             }
@@ -1302,7 +1302,7 @@ public class SipManager
             MessageEvent evt = new MessageEvent(message);
             for (int i = listeners.size() - 1; i >= 0; i--) {
                 ( (CommunicationsListener) listeners.get(i)).messageReceived(
-                    evt);
+                        evt);
             }
         }
         finally {
@@ -1393,8 +1393,8 @@ public class SipManager
             UnknownMessageEvent evt = new UnknownMessageEvent(message);
             for (int i = listeners.size() - 1; i >= 0; i--) {
                 ( (CommunicationsListener) listeners.get(i)).
-                    receivedUnknownMessage(
-                    evt);
+                        receivedUnknownMessage(
+                                evt);
             }
         }
         finally {
@@ -1409,14 +1409,14 @@ public class SipManager
             console.logEntry();
             if (console.isDebugEnabled()) {
                 console.debug("locally rejected call. reason="
-                              + reason
-                              + "\ninvite message=" + invite);
+                        + reason
+                        + "\ninvite message=" + invite);
             }
             CallRejectedEvent evt = new CallRejectedEvent(reason, invite);
             for (int i = listeners.size() - 1; i >= 0; i--) {
                 ( (CommunicationsListener) listeners.get(i)).
-                    callRejectedLocally(
-                    evt);
+                        callRejectedLocally(
+                                evt);
             }
         }
         finally {
@@ -1430,14 +1430,14 @@ public class SipManager
             console.logEntry();
             if (console.isDebugEnabled()) {
                 console.debug("call rejected remotely. reason="
-                              + reason
-                              + "\ninvite message=" + invite);
+                        + reason
+                        + "\ninvite message=" + invite);
             }
             CallRejectedEvent evt = new CallRejectedEvent(reason, invite);
             for (int i = listeners.size() - 1; i >= 0; i--) {
                 ( (CommunicationsListener) listeners.get(i)).
-                    callRejectedRemotely(
-                    evt);
+                        callRejectedRemotely(
+                                evt);
             }
         }
         finally {
@@ -1453,10 +1453,10 @@ public class SipManager
             console.logEntry();
             console.error(throwable);
             CommunicationsErrorEvent evt = new CommunicationsErrorEvent(
-                throwable);
+                    throwable);
             for (int i = listeners.size() - 1; i >= 0; i--) {
                 ( (CommunicationsListener) listeners.get(i)).
-                    communicationsErrorOccurred(evt);
+                        communicationsErrorOccurred(evt);
             }
         }
         finally {
@@ -1464,7 +1464,7 @@ public class SipManager
         }
     } //error occurred
 
-//============================= SIP LISTENER METHODS ==============================
+    //============================= SIP LISTENER METHODS ==============================
     public void processRequest(RequestEvent requestReceivedEvent)
     {
         try {
@@ -1473,14 +1473,14 @@ public class SipManager
                 console.debug("received request=" + requestReceivedEvent);
             }
             ServerTransaction serverTransaction = requestReceivedEvent.
-                getServerTransaction();
+                    getServerTransaction();
             Request request = requestReceivedEvent.getRequest();
             String method = ( (CSeqHeader) request.getHeader(CSeqHeader.NAME)).
-                getMethod();
+                    getMethod();
             if (serverTransaction == null) {
                 try {
                     serverTransaction = sipProvider.getNewServerTransaction(
-                        request);
+                            request);
                 }
                 catch (TransactionAlreadyExistsException ex) {
                     /*fireCommunicationsError(
@@ -1492,27 +1492,27 @@ public class SipManager
                     fireUnknownMessageReceived(request);*/
                     //let's not scare the user
                     console.error("Failed to create a new server"
-                        + "transaction for an incoming request\n"
-                        + "(Next message contains the request)",
-                        ex
+                                    + "transaction for an incoming request\n"
+                                    + "(Next message contains the request)",
+                            ex
                     );
 
                     return;
                 }
                 catch (TransactionUnavailableException ex) {
                     /**
-                    fireCommunicationsError(
-                        new CommunicationsException(
-                        "Failed to create a new server"
-                        + "transaction for an incoming request\n"
-                        + "(Next message contains the request)",
-                        ex));
-                    fireUnknownMessageReceived(request);*/
+                     fireCommunicationsError(
+                     new CommunicationsException(
+                     "Failed to create a new server"
+                     + "transaction for an incoming request\n"
+                     + "(Next message contains the request)",
+                     ex));
+                     fireUnknownMessageReceived(request);*/
                     //let's not scare the user
                     console.error("Failed to create a new server"
-                        + "transaction for an incoming request\n"
-                        + "(Next message contains the request)",
-                        ex
+                                    + "transaction for an incoming request\n"
+                                    + "(Next message contains the request)",
+                            ex
                     );
                     return;
                 }
@@ -1526,21 +1526,21 @@ public class SipManager
                 {
                     if(console.isDebugEnabled())
                         console.debug("request is an INVITE. Dialog state="
-                                      +serverTransaction.getDialog().getState());
+                                +serverTransaction.getDialog().getState());
                     callProcessing.processInvite(serverTransaction, request);
                 }
                 else
                 {
                     console.debug("request is a reINVITE. Dialog state="
-                                      +serverTransaction.getDialog().getState());
+                            +serverTransaction.getDialog().getState());
                     callProcessing.processReInvite(serverTransaction, request);
                 }
             }
             //ACK
             else if (request.getMethod().equals(Request.ACK)) {
                 if (serverTransaction != null
-                    && serverTransaction.getDialog().getFirstTransaction().
-                    getRequest().getMethod().equals(Request.INVITE)) {
+                        && serverTransaction.getDialog().getFirstTransaction().
+                        getRequest().getMethod().equals(Request.INVITE)) {
                     callProcessing.processAck(serverTransaction, request);
                 }
                 else {
@@ -1551,16 +1551,16 @@ public class SipManager
             //BYE
             else if (request.getMethod().equals(Request.BYE)) {
                 if (dialog.getFirstTransaction().getRequest().getMethod().
-                    equals(
-                    Request.INVITE)) {
+                        equals(
+                                Request.INVITE)) {
                     callProcessing.processBye(serverTransaction, request);
                 }
             }
             //CANCEL
             else if (request.getMethod().equals(Request.CANCEL)) {
                 if (dialog.getFirstTransaction().getRequest().getMethod().
-                    equals(
-                    Request.INVITE)) {
+                        equals(
+                                Request.INVITE)) {
                     callProcessing.processCancel(serverTransaction, request);
                 }
                 else {
@@ -1625,7 +1625,7 @@ public class SipManager
             console.logEntry();
             if (console.isDebugEnabled()) {
                 console.debug("received time out event: "
-                              + transactionTimeOutEvent);
+                        + transactionTimeOutEvent);
             }
             Transaction transaction;
             if (transactionTimeOutEvent.isServerTransaction()) {
@@ -1635,7 +1635,7 @@ public class SipManager
                 transaction = transactionTimeOutEvent.getClientTransaction();
             }
             Request request =
-                transaction.getRequest();
+                    transaction.getRequest();
             if (request.getMethod().equals(Request.REGISTER)) {
                 registerProcessing.processTimeout(transaction, request);
             }
@@ -1645,10 +1645,10 @@ public class SipManager
             else {
                 //Just show an error for now
                 Console.showError("TimeOut Error!",
-                    "Received a TimeoutEvent while waiting on a message"
-                    + "\n(Check Details to see the message that caused it)",
-                    request.toString()
-                    );
+                        "Received a TimeoutEvent while waiting on a message"
+                                + "\n(Check Details to see the message that caused it)",
+                        request.toString()
+                );
             }
         }
         finally {
@@ -1665,7 +1665,7 @@ public class SipManager
                 console.debug("received response=" + responseReceivedEvent);
             }
             ClientTransaction clientTransaction = responseReceivedEvent.
-                getClientTransaction();
+                    getClientTransaction();
             if (clientTransaction == null) {
                 console.debug("ignoring a transactionless response");
                 return;
@@ -1673,7 +1673,7 @@ public class SipManager
             Response response = responseReceivedEvent.getResponse();
             Dialog dialog = clientTransaction.getDialog();
             String method = ( (CSeqHeader) response.getHeader(CSeqHeader.NAME)).
-                getMethod();
+                    getMethod();
             Response responseClone = (Response) response.clone();
             //OK
             if (response.getStatusCode() == Response.OK) {
@@ -1704,9 +1704,9 @@ public class SipManager
             }
             //TRYING
             else if (response.getStatusCode() == Response.TRYING
-                     //process all provisional responses here
-                     //reported by Les Roger Davis
-                     || response.getStatusCode() / 100 == 1) {
+                    //process all provisional responses here
+                    //reported by Les Roger Davis
+                    || response.getStatusCode() / 100 == 1) {
                 if (method.equals(Request.INVITE)) {
                     callProcessing.processTrying(clientTransaction, response);
                 }
@@ -1748,11 +1748,11 @@ public class SipManager
                 if (method.equals(Request.REGISTER)) {
                     //Fixed typo issues - Reported by pizarro
                     registerProcessing.processNotImplemented(clientTransaction,
-                        response);
+                            response);
                 }
                 else if (method.equals(Request.INVITE)) {
                     callProcessing.processNotImplemented(clientTransaction,
-                        response);
+                            response);
                 }
                 else {
                     fireUnknownMessageReceived(response);
@@ -1761,7 +1761,7 @@ public class SipManager
             //REQUEST_TERMINATED
             else if (response.getStatusCode() == Response.REQUEST_TERMINATED) {
                 callProcessing.processRequestTerminated(clientTransaction,
-                    response);
+                        response);
             }
             //BUSY_HERE
             else if (response.getStatusCode() == Response.BUSY_HERE) {
@@ -1774,7 +1774,7 @@ public class SipManager
             }
             //401 UNAUTHORIZED
             else if (response.getStatusCode() == Response.UNAUTHORIZED
-                     || response.getStatusCode() == Response.PROXY_AUTHENTICATION_REQUIRED) {
+                    || response.getStatusCode() == Response.PROXY_AUTHENTICATION_REQUIRED) {
                 if(method.equals(Request.INVITE))
                     callProcessing.processAuthenticationChallenge(clientTransaction, response);
                 else if(method.equals(Request.REGISTER))
@@ -1786,18 +1786,18 @@ public class SipManager
             }
             //Other Errors
             else if ( //We'll handle all errors the same way so no individual handling
-                     //is needed
-                     //response.getStatusCode() == Response.NOT_ACCEPTABLE
-                     //|| response.getStatusCode() == Response.SESSION_NOT_ACCEPTABLE
-                     response.getStatusCode() / 100 == 4
-                     )
+                //is needed
+                //response.getStatusCode() == Response.NOT_ACCEPTABLE
+                //|| response.getStatusCode() == Response.SESSION_NOT_ACCEPTABLE
+                    response.getStatusCode() / 100 == 4
+                    )
             {
-               if (method.equals(Request.INVITE)) {
-                   callProcessing.processCallError(clientTransaction, response);
-               }
-               else {
-                   fireUnknownMessageReceived(response);
-               }
+                if (method.equals(Request.INVITE)) {
+                    callProcessing.processCallError(clientTransaction, response);
+                }
+                else {
+                    fireUnknownMessageReceived(response);
+                }
 
             }
             else if (response.getStatusCode() == Response.ACCEPTED) {
@@ -1837,12 +1837,12 @@ public class SipManager
                 fireUnknownMessageReceived(response);
             }
             else if (response.getStatusCode() ==
-                     Response.CALL_IS_BEING_FORWARDED) {
+                    Response.CALL_IS_BEING_FORWARDED) {
                 /** @todo add proper request handling */
                 fireUnknownMessageReceived(response);
             }
             else if (response.getStatusCode() ==
-                     Response.CALL_OR_TRANSACTION_DOES_NOT_EXIST) {
+                    Response.CALL_OR_TRANSACTION_DOES_NOT_EXIST) {
                 /** @todo add proper request handling */
                 fireUnknownMessageReceived(response);
             }
@@ -1851,7 +1851,7 @@ public class SipManager
                 fireUnknownMessageReceived(response);
             }
             else if (response.getStatusCode() ==
-                     Response.DOES_NOT_EXIST_ANYWHERE) {
+                    Response.DOES_NOT_EXIST_ANYWHERE) {
                 /** @todo add proper request handling */
                 fireUnknownMessageReceived(response);
             }
@@ -1908,7 +1908,7 @@ public class SipManager
                 fireUnknownMessageReceived(response);
             }
             else if (response.getStatusCode() ==
-                     Response.REQUEST_ENTITY_TOO_LARGE) {
+                    Response.REQUEST_ENTITY_TOO_LARGE) {
                 /** @todo add proper request handling */
                 fireUnknownMessageReceived(response);
             }
@@ -1937,7 +1937,7 @@ public class SipManager
                 fireUnknownMessageReceived(response);
             }
             else if (response.getStatusCode() ==
-                     Response.SESSION_NOT_ACCEPTABLE) {
+                    Response.SESSION_NOT_ACCEPTABLE) {
                 /** @todo add proper request handling */
                 fireUnknownMessageReceived(response);
             }
@@ -1946,7 +1946,7 @@ public class SipManager
                 fireUnknownMessageReceived(response);
             }
             else if (response.getStatusCode() ==
-                     Response.TEMPORARILY_UNAVAILABLE) {
+                    Response.TEMPORARILY_UNAVAILABLE) {
                 /** @todo add proper request handling */
                 fireUnknownMessageReceived(response);
             }
@@ -1959,12 +1959,12 @@ public class SipManager
                 fireUnknownMessageReceived(response);
             }
             else if (response.getStatusCode() ==
-                     Response.UNSUPPORTED_MEDIA_TYPE) {
+                    Response.UNSUPPORTED_MEDIA_TYPE) {
                 /** @todo add proper request handling */
                 fireUnknownMessageReceived(response);
             }
             else if (response.getStatusCode() ==
-                     Response.UNSUPPORTED_URI_SCHEME) {
+                    Response.UNSUPPORTED_URI_SCHEME) {
                 /** @todo add proper request handling */
                 fireUnknownMessageReceived(response);
             }
@@ -2011,13 +2011,13 @@ public class SipManager
         if (!isStarted) {
             console.error("attempt to use the stack while not started");
             throw new CommunicationsException(
-                "The underlying SIP Stack had not been"
-                + "properly initialised! Impossible to continue");
+                    "The underlying SIP Stack had not been"
+                            + "properly initialised! Impossible to continue");
         }
     }
 
     public void sendServerInternalError(int callID) throws
-        CommunicationsException
+            CommunicationsException
     {
         try {
             console.logEntry();
@@ -2038,7 +2038,7 @@ public class SipManager
      * @return ContactGroup the contact list retrieved from the specified URL
      */
     public ContactGroup retrieveContactList(String url)
-        throws CommunicationsException
+            throws CommunicationsException
     {
         try{
             console.logEntry();
@@ -2093,7 +2093,7 @@ public class SipManager
      * @throws CommunicationsException if changing the status fails
      */
     public void requestPresenceStatusChange(String newStatusDescriptorStr)
-        throws CommunicationsException
+            throws CommunicationsException
     {
         presenceStatusManager.requestStatusChange(newStatusDescriptorStr);
     }
