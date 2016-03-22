@@ -1,4 +1,5 @@
-package net.java.sip.communicator.extensions;
+package gov.nist.sip.proxy.extensions;
+
 import java.sql.*;
 
 public class ConnectToDB {
@@ -54,3 +55,4 @@ public class ConnectToDB {
 
 
 }
+

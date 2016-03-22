@@ -11,21 +11,16 @@ import net.java.sip.communicator.common.Utils;
 import net.java.sip.communicator.gui.GuiManager;
 import net.java.sip.communicator.sip.security.UserCredentials;
 
-/**
- * Created by yandall on 20/3/2016.
- */
 public class BlockUI extends JFrame {
-	ConnectToDB database;
-	
-	
+    private ConnectToDB database;
+
     public static void main(String[] args) {
         new BlockUI();
-        
+
     }
 
-
     public BlockUI() {
-    	database = new ConnectToDB();
+        database = new ConnectToDB();
         JFrame frame = new JFrame("Block User");
         frame.setVisible(true);
         frame.setSize(400, 100);
@@ -48,25 +43,28 @@ public class BlockUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-               String username = Utils.getProperty("net.java.sip.communicator.sip.USER_NAME");
-
-               String textFieldValue = txtfld.getText();
-                // Blocking handler call
+                // Get username from configurations xml file
+                String username = Utils.getProperty("net.java.sip.communicator.sip.USER_NAME");
+                String textFieldValue = txtfld.getText();
+                // Update database
                 Connection conn = database.start();
                 String sql = "INSERT INTO blocks VALUES (?,?)";
                 PreparedStatement stmt;
-				try {
-					stmt = conn.prepareStatement(sql);
-					stmt.setString(1, username);
-					stmt.setString(2, textFieldValue);
-					stmt.executeUpdate();
-					stmt.close();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				database.close(conn);
-				
+                try {
+                    stmt = conn.prepareStatement(sql);
+                    stmt.setString(1, username);
+                    stmt.setString(2, textFieldValue);
+                    stmt.executeUpdate();
+                    stmt.close();
+                } catch (SQLException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+                database.close(conn);
+
+                // Close window.
+                frame.dispose();
+
             }
         });
         panel.add(okbtn);
